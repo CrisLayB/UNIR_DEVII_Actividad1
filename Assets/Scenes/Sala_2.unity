@@ -2074,6 +2074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Drawer
   drawerID: 0
+  order: {fileID: 0}
 --- !u!64 &194924842
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2236,6 +2237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Drawer
   drawerID: 4
+  order: {fileID: 0}
 --- !u!65 &305743881
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3072,6 +3074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Drawer
   drawerID: 2
+  order: {fileID: 0}
 --- !u!33 &487031869
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3768,6 +3771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Drawer
   drawerID: 1
+  order: {fileID: 0}
 --- !u!65 &590622200
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4460,6 +4464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Drawer
   drawerID: 3
+  order: {fileID: 0}
 --- !u!33 &650371265
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -8435,7 +8440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1043575477
 Transform:
   m_ObjectHideFlags: 0
@@ -13005,7 +13010,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1785039111
 Transform:
   m_ObjectHideFlags: 0
@@ -14213,6 +14218,9 @@ MonoBehaviour:
   - {fileID: 649466482}
   - {fileID: 270867290}
   drawersOrder: 0400000002000000000000000300000001000000
+  lights:
+  - {fileID: 1785039110}
+  - {fileID: 1043575476}
 --- !u!4 &2051485718
 Transform:
   m_ObjectHideFlags: 0

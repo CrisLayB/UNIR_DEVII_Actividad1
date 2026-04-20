@@ -7,6 +7,8 @@ public class MorguePuzzleController : MonoBehaviour
 
     [SerializeField] private int[] drawersOrder = new int[5];
 
+    [SerializeField] private GameObject[] lights;
+
     public Drawer[] Drawers => drawers;
 
     int currentDrawerIndex = 0;
@@ -93,6 +95,11 @@ public class MorguePuzzleController : MonoBehaviour
 
     public void LightsOn()
     {
+        foreach (var light in lights)
+        {
+            light.SetActive(true);
+        }
+
         foreach (var drawer in drawers)
         {
             drawer.ShowOrder();
@@ -101,6 +108,11 @@ public class MorguePuzzleController : MonoBehaviour
 
     public void LightsOff()
     {
+        foreach (var light in lights)
+        {
+            light.SetActive(false);
+        }
+
         foreach (var drawer in drawers)
         {
             drawer.HideOrder();
