@@ -12,12 +12,15 @@ public class PlayerInputHandler : MonoBehaviour
     [Header("Action Name References")]
     [SerializeField] private string moveActionName = "Move";
     [SerializeField] private string lookActionName = "Look";
+    [SerializeField] private string interactActionName = "Interact";
 
     private InputAction moveAction;
     private InputAction lookAction;
+    private InputAction interactAction;
 
     public Vector2 MoveInput { get; private set; }
     public Vector2 LookInput { get; private set; }
+    public bool InteractPressed { get; private set; }
 
 
 
@@ -27,6 +30,7 @@ public class PlayerInputHandler : MonoBehaviour
 
         moveAction = mapReference.FindAction(moveActionName);
         lookAction = mapReference.FindAction(lookActionName);
+        interactAction = mapReference.FindAction(interactActionName);
 
         SubscribeActionValuesToInputEvents();
     }
@@ -38,6 +42,16 @@ public class PlayerInputHandler : MonoBehaviour
 
         lookAction.performed += inputInfo => LookInput = inputInfo.ReadValue<Vector2>();
         lookAction.canceled += inputInfo => LookInput = Vector2.zero;
+
+        if (interactAction != null)
+        {
+            interactAction.performed += _ => InteractPressed = true;
+            interactAction.canceled += _ => InteractPressed = false;
+        }
+        else
+        {
+            Debug.LogWarning(gameObject.name + ": Interact action not found in action map '" + actionMapName + "'.");
+        }
     }
 
 
