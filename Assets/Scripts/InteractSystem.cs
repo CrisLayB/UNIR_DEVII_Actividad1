@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -12,6 +13,7 @@ public class InteractSystem : MonoBehaviour
     [SerializeField] private TMP_Text actionText;
 
     private Interactable _currentInteractable;
+    private HashSet<string> _collectedPickableNames = new HashSet<string>();
 
     private void Awake()
     {
@@ -31,8 +33,31 @@ public class InteractSystem : MonoBehaviour
     {
         DetectInteractable();
 
-        if (_currentInteractable != null && inputHandler != null && inputHandler.InteractPressed)
+        if (_currentInteractable != null && inputHandler != null && inputHandler.InteractPressed && CanInteract(_currentInteractable))
+        {
             _currentInteractable.Interact();
+
+            if (_currentInteractable is Pickable pickable)
+            {
+                _collectedPickableNames.Add(pickable.InteractableName);
+                if (pickable.IsDestroyabelAfterUse)
+                    Destroy(pickable.gameObject);
+            }
+        }
+    }
+
+    private bool CanInteract(Interactable interactable)
+    {
+        string[] required = interactable.RequiredPickableNames;
+        if (required == null || required.Length == 0)
+            return true;
+
+        foreach (string name in required)
+        {
+            if (!_collectedPickableNames.Contains(name))
+                return false;
+        }
+        return true;
     }
 
     private void DetectInteractable()
@@ -46,7 +71,20 @@ public class InteractSystem : MonoBehaviour
                 _currentInteractable = interactable;
 
                 if (actionText != null)
+                {
                     actionText.text = $"[E] - {_currentInteractable.InteractableName}";
+
+                    string[] required = _currentInteractable.RequiredPickableNames;
+                    if (required != null && required.Length > 0)
+                    {
+                        actionText.text += "\nNecesitas:";
+                        foreach (string name in required)
+                        {
+                            bool hasItem = _collectedPickableNames.Contains(name);
+                            actionText.text += $" [{name}] {(hasItem ? "\u2713" : "\u2717")}";
+                        }
+                    }
+                }
 
                 Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
             }

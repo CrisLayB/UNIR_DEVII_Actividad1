@@ -7,22 +7,24 @@ public class Interactable : MonoBehaviour
     [SerializeField] private string interactableName;
     [SerializeField] private float interactionDistance = 3f;
     [SerializeField] private GameObject dropableObject;
+    [SerializeField] private string[] requiredPickableNames;
     private Animator _animator;
     private bool _interacted = false;
 
     public string InteractableName => interactableName;
+    public string[] RequiredPickableNames => requiredPickableNames;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
 
-        if(_animator == null)
+        if (_animator == null)
         {
             Debug.LogWarning(gameObject.name + ".cs: No Animator component found");
         }
     }
 
-    public void Interact()
+    public virtual void Interact()
     {
         if (_interacted) return;
 
