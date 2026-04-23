@@ -1,5 +1,12 @@
 using UnityEngine;
 
+[System.Serializable]
+public class ItemsOn
+{
+    public MonoBehaviour objectOn;
+    public bool requiredState;
+}
+
 [RequireComponent(typeof(Collider))]
 public class Interactable : MonoBehaviour
 {
@@ -7,12 +14,15 @@ public class Interactable : MonoBehaviour
     [SerializeField] private string interactableName;
     [SerializeField] private float interactionDistance = 3f;
     [SerializeField] private GameObject dropableObject;
-    [SerializeField] private string[] requiredPickableNames;
+    [SerializeField] protected string[] requiredPickableNames;
+    [SerializeField] protected ItemsOn[] requiredObjectsOn;
+
     private Animator _animator;
     private bool _interacted = false;
 
     public string InteractableName => interactableName;
     public string[] RequiredPickableNames => requiredPickableNames;
+    public ItemsOn[] RequiredObjectsOn => requiredObjectsOn;
 
     private void Awake()
     {

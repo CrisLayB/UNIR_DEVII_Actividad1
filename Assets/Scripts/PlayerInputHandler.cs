@@ -56,6 +56,11 @@ public class PlayerInputHandler : MonoBehaviour
 
 
 
+    private void LateUpdate()
+    {
+        InteractPressed = false;
+    }
+
     private void OnEnable()
     {
         playerControls.FindActionMap(actionMapName).Enable();

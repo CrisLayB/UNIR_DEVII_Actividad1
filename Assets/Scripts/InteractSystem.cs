@@ -49,14 +49,26 @@ public class InteractSystem : MonoBehaviour
     private bool CanInteract(Interactable interactable)
     {
         string[] required = interactable.RequiredPickableNames;
-        if (required == null || required.Length == 0)
-            return true;
-
-        foreach (string name in required)
+        if (required != null)
         {
-            if (!_collectedPickableNames.Contains(name))
-                return false;
+            foreach (string name in required)
+            {
+                if (!_collectedPickableNames.Contains(name))
+                    return false;
+            }
         }
+
+        ItemsOn[] requiredOn = interactable.RequiredObjectsOn;
+        if (requiredOn != null)
+        {
+            foreach (ItemsOn item in requiredOn)
+            {
+                ObjectOn oo = item.objectOn as ObjectOn;
+                if (oo == null || oo.IsOn != item.requiredState)
+                    return false;
+            }
+        }
+
         return true;
     }
 
@@ -75,13 +87,32 @@ public class InteractSystem : MonoBehaviour
                     actionText.text = $"[E] - {_currentInteractable.InteractableName}";
 
                     string[] required = _currentInteractable.RequiredPickableNames;
-                    if (required != null && required.Length > 0)
+                    ItemsOn[] requiredOn = _currentInteractable.RequiredObjectsOn;
+                    bool hasRequirements = (required != null && required.Length > 0) || (requiredOn != null && requiredOn.Length > 0);
+
+                    if (hasRequirements)
                     {
                         actionText.text += "\nNecesitas:";
-                        foreach (string name in required)
+
+                        if (required != null)
                         {
-                            bool hasItem = _collectedPickableNames.Contains(name);
-                            actionText.text += $" [{name}] {(hasItem ? "\u2713" : "\u2717")}";
+                            foreach (string name in required)
+                            {
+                                bool hasItem = _collectedPickableNames.Contains(name);
+                                actionText.text += $" [{name}] {(hasItem ? "\u2713" : "\u2717")}";
+                            }
+                        }
+
+                        if (requiredOn != null)
+                        {
+                            foreach (ItemsOn item in requiredOn)
+                            {
+                                if (item.objectOn == null) continue;
+                                ObjectOn oo = item.objectOn as ObjectOn;
+                                bool met = oo != null && oo.IsOn == item.requiredState;
+                                string label = item.objectOn.gameObject.name;
+                                actionText.text += $" [{label}: {(item.requiredState ? "ON" : "OFF")}] {(met ? "\u2713" : "\u2717")}";
+                            }
                         }
                     }
                 }
