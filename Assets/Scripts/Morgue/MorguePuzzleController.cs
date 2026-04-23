@@ -118,4 +118,16 @@ public class MorguePuzzleController : MonoBehaviour
             drawer.HideOrder();
         }
     }
+
+    public void SwitchPressed()
+    {
+        if (lights[0].activeSelf)
+        {
+            LightsOff();
+        }
+        else
+        {
+            LightsOn();
+        }
+    }
 }

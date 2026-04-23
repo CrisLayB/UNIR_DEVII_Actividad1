@@ -3,17 +3,17 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class Drawer : MonoBehaviour
+public class Drawer : Interactable
 {
     [SerializeField] private int drawerID;
     [SerializeField] private GameObject order;
+    [SerializeField] private GameObject door;
 
     private bool isOpen = false;
 
     public event Action<int, bool> OnDrawerStateChanged;
 
     private float originalXPosition;
-    private float destinationX = -2f;
     private bool isMoving = false;
 
     private void Start()
@@ -29,7 +29,7 @@ public class Drawer : MonoBehaviour
             return;
 
         isOpen = true;
-        StartCoroutine(MoveToPosition(destinationX, true));
+        StartCoroutine(RotateDoor(true));
     }
 
     public void Close()
@@ -38,7 +38,7 @@ public class Drawer : MonoBehaviour
             return;
 
         isOpen = false;
-        StartCoroutine(MoveToPosition(originalXPosition, false));
+        StartCoroutine(RotateDoor(false));
     }
 
     public void Toggle()
@@ -52,25 +52,21 @@ public class Drawer : MonoBehaviour
             Open();
     }
 
-    private IEnumerator MoveToPosition(float targetX, bool finalOpenState)
+    private IEnumerator RotateDoor(bool finalOpenState)
     {
         isMoving = true;
 
-        Vector3 startPos = transform.localPosition;
-        Vector3 targetPos = new Vector3(targetX, startPos.y, startPos.z);
+        var targetRot = finalOpenState ? Quaternion.Euler(0, -90, 0) : Quaternion.identity;
 
-        while (Vector3.Distance(transform.localPosition, targetPos) > 0.001f)
+        while (Quaternion.Angle(door.transform.localRotation, targetRot) > 0.1f)
         {
-            transform.localPosition = Vector3.Lerp(
-                transform.localPosition,
-                targetPos,
+            door.transform.localRotation = Quaternion.Slerp(
+                door.transform.localRotation,
+                targetRot,
                 Time.deltaTime * 8f
             );
-
             yield return null;
         }
-
-        transform.localPosition = targetPos;
 
         isMoving = false;
 
@@ -85,5 +81,10 @@ public class Drawer : MonoBehaviour
     public void HideOrder()
     {
         order.SetActive(false);
+    }
+
+    override public void Interact()
+    {
+        Toggle();
     }
 }

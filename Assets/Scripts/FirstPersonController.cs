@@ -17,12 +17,14 @@ public class FirstPersonController : MonoBehaviour
 
     private Vector3 currentMovement;
     private float verticalRotation;
-
+    private float fixedY;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        fixedY = transform.position.y;
     }
 
     private void Update()
@@ -47,6 +49,10 @@ public class FirstPersonController : MonoBehaviour
         currentMovement.z = worldDirection.z * movementSpeed;
 
         characterController.Move(currentMovement * Time.deltaTime);
+
+        Vector3 pos = transform.position;
+        pos.y = fixedY;
+        transform.position = pos;
     }
 
     private void ApplyHorizontalRotation(float rotationAmount)

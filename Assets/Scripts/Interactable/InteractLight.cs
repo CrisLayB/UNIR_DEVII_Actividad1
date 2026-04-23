@@ -3,20 +3,23 @@ using UnityEngine;
 public class InteractLight : Interactable, ObjectOn
 {
     [Header("Light Settings")]
-    [SerializeField] private Light _light;
+    [SerializeField] private Light[] _lights;
 
-    public bool IsLightOn => _light != null && _light.enabled;
+    public bool IsLightOn => _lights != null && _lights.Length > 0 && _lights[0].enabled;
     public bool IsOn { get; set; }
 
     private void Awake()
     {
-        if (_light == null)
+        if (_lights == null || _lights.Length == 0)
         {
             Debug.LogWarning(gameObject.name + ".cs: No Light component found");
         }
         else
         {
-            _light.enabled = false; // Ensure the light starts off
+            foreach (var light in _lights)
+            {
+                light.enabled = false; // Ensure the light starts off
+            }
         }
     }
 
@@ -24,10 +27,13 @@ public class InteractLight : Interactable, ObjectOn
     {
         base.Interact();
 
-        if (_light != null)
+        if (_lights != null && _lights.Length > 0)
         {
-            _light.enabled = !_light.enabled;
-            IsOn = _light.enabled;
+            foreach (var light in _lights)
+            {
+                light.enabled = !light.enabled;
+            }
+            IsOn = _lights[0].enabled;
         }
     }
 }
