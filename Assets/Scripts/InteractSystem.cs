@@ -99,7 +99,7 @@ public class InteractSystem : MonoBehaviour
                             foreach (string name in required)
                             {
                                 bool hasItem = _collectedPickableNames.Contains(name);
-                                actionText.text += $" [{name}] {(hasItem ? "\u2713" : "\u2717")}";
+                                actionText.text += $" [{name}] {(hasItem ? "\u2713" : "\u2717")} \n";
                             }
                         }
 
@@ -111,7 +111,7 @@ public class InteractSystem : MonoBehaviour
                                 ObjectOn oo = item.objectOn as ObjectOn;
                                 bool met = oo != null && oo.IsOn == item.requiredState;
                                 string label = item.objectOn.gameObject.name;
-                                actionText.text += $" [{label}: {(item.requiredState ? "ON" : "OFF")}] {(met ? "\u2713" : "\u2717")}";
+                                actionText.text += $" [{label}: {(item.requiredState ? "ON" : "OFF")}] {(met ? "\u2713" : "\u2717")} \n";
                             }
                         }
                     }

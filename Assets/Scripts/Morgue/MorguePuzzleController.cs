@@ -9,6 +9,8 @@ public class MorguePuzzleController : MonoBehaviour
 
     [SerializeField] private GameObject[] lights;
 
+    [SerializeField] private GameObject exitKey;
+
     public Drawer[] Drawers => drawers;
 
     int currentDrawerIndex = 0;
@@ -68,8 +70,13 @@ public class MorguePuzzleController : MonoBehaviour
     {
         if (currentDrawerIndex >= drawersOrder.Length)
         {
+            exitKey.SetActive(true);
             Debug.Log("Puzzle completed!");
             OnPuzzleCompleted?.Invoke();
+            foreach (var drawer in drawers)
+            {
+                drawer.PuzzleResolved();
+            }
         }
     }
 

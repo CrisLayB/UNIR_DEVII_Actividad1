@@ -87,4 +87,9 @@ public class Drawer : Interactable
     {
         Toggle();
     }
+
+    public void PuzzleResolved()
+    {
+        GetComponent<BoxCollider>().enabled = false;
+    }
 }

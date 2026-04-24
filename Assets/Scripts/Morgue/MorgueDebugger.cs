@@ -14,6 +14,7 @@ public class MorgueDebugger : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
         var keyboard = Keyboard.current;
 
         if (keyboard.digit0Key.wasPressedThisFrame)
@@ -36,5 +37,6 @@ public class MorgueDebugger : MonoBehaviour
 
         if (keyboard.fKey.wasPressedThisFrame)
             puzzleController.LightsOff();
+#endif
     }
 }
